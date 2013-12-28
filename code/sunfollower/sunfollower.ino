@@ -1,9 +1,9 @@
 #include <Servo.h> 
- 
+
 // Create the servo objects
 Servo azimuth;
 Servo elevation;
- 
+
 // 3 ldr inputs. Seen from the direction of the illumination, they are at top
 // left, top right, bottom left.
 
@@ -22,35 +22,63 @@ float starter = 0; // Starting position offset between the servos.
 int adjx = 90; // Position of azimuth
 int adjy = 90; // Position of elevation
 float decay = 60000; // Gives the amount of steps to run on. Higher gives a slower decay.
- 
+
 void setup() 
 { 
-  azimuth.attach(9);  // attaches the servo on pin 9 to the servo object 
-  elevation.attach(10);  // attaches the servo on pin 10 to the servo object 
-  azimuth_acc == acc_max/2;
-  elevation_acc == acc_max/2;
+    azimuth.attach(9);  // attaches the servo on pin 9 to the servo object 
+    elevation.attach(10);  // attaches the servo on pin 10 to the servo object 
+    azimuth = 90;
+    elevation = 90;
+    azimuth_acc == acc_max/2; 
+    elevation_acc == acc_max/2;
 } 
- 
- 
+
+
 void loop() 
 { 
-
-  if ( topleft > topright )
-  {
-    azimuth_acc += 1;
-    if ( azimuth_acc == acc_max )
+    if ( topleft > topright ) 
     {
-      if ( azimuth < servo_max )
-      {
-          azimuth += 1;
-
-      
-  } else {
-    azimuth_acc -= 1;
-  } 
-
-  // Return to center after drawing.
-  azimuth.write(90);
-  elevation.write(90);
+        azimuth_acc += 1;
+        if ( azimuth_acc == acc_max )
+        {
+            azimuth_acc = acc_max/2;
+            if ( azimuth < servo_max )
+            {
+                azimuth += 1;
+            }
+        }
+    } else {
+        azimuth_acc -= 1;
+        if ( azimuth_acc == 0 )
+        {
+            azimuth_acc = acc_max/2;
+            if ( azimuth > servo_min )
+            {
+                azimuth -= 1;
+            }
+        }
+    } 
+    if ( topleft > bottomleft ) 
+    {
+        elevation_acc += 1;
+        if ( elevation_acc == acc_max )
+        {
+            elevation_acc = acc_max/2;
+            if ( elevation < servo_max )
+            {
+                elevation += 1;
+            }
+        }
+    } else {
+        elevation_acc -= 1;
+        if ( elevation_acc == 0 )
+        {
+            elevation_acc = acc_max/2;
+            if ( elevation > servo_min )
+            {
+                elevation -= 1;
+            }
+        }
+    } 
 }
 
