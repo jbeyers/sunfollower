@@ -1,41 +1,41 @@
 #include <Servo.h> 
 
 // Create the servo objects
-Servo azimuth;
-Servo elevation;
+Servo azimuth_servo;
+Servo elevation_servo;
 
 // 3 ldr inputs. Seen from the direction of the illumination, they are at top
 // left, top right, bottom left.
 
-int topleft = A0 // Top left ldr pin
-int topright = A1 // Top right ldr pin
-int bottomleft = A2 // Bottom left ldr pin
 
-acc_max = 1000;
-servo_min = 20;
-servo_max = 160;
 
-double pos = 0; // Position incrementer
-float spd = 0.005; // This value seems to work for reasonable speed.
-float facter = 1.0; // Ratio between azimuth and elevation periods.
-float starter = 0; // Starting position offset between the servos.
-int adjx = 90; // Position of azimuth
-int adjy = 90; // Position of elevation
-float decay = 60000; // Gives the amount of steps to run on. Higher gives a slower decay.
+int acc_max = 1000;
+int servo_min = 20;
+int servo_max = 160;
+int azimuth = 90;
+int elevation = 90;
+int azimuth_acc = acc_max/2; 
+int elevation_acc = acc_max/2;
 
 void setup() 
 { 
-    azimuth.attach(9);  // attaches the servo on pin 9 to the servo object 
-    elevation.attach(10);  // attaches the servo on pin 10 to the servo object 
-    azimuth = 90;
-    elevation = 90;
-    azimuth_acc == acc_max/2; 
-    elevation_acc == acc_max/2;
+    azimuth_servo.attach(9);  // attaches the servo on pin 9 to the servo object 
+    elevation_servo.attach(10);  // attaches the servo on pin 10 to the servo object 
+    Serial.begin(9600);
+
 } 
 
 
-void loop() 
-{ 
+void loop()
+    {
+    int topleft = analogRead(A0); // Top left ldr pin
+    int topright = analogRead(A1); // Top right ldr pin
+    int bottomleft = analogRead(A2); // Bottom left ldr pin
+    //Serial.println("Val");
+    //Serial.println(topleft);
+    //Serial.println(topright);
+    //Serial.println(bottomleft);
+    
     if ( topleft > topright ) 
     {
         azimuth_acc += 1;
@@ -58,7 +58,7 @@ void loop()
             }
         }
     } 
-    if ( topleft > bottomleft ) 
+    if ( topleft < bottomleft ) 
     {
         elevation_acc += 1;
         if ( elevation_acc == acc_max )
@@ -79,6 +79,8 @@ void loop()
                 elevation -= 1;
             }
         }
-    } 
+    }
+    azimuth_servo.write(azimuth);
+    elevation_servo.write(elevation);
 }
 
