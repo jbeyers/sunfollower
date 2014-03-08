@@ -9,7 +9,8 @@ Servo elevation_servo;
 
 
 
-int acc_max = 1000;
+int acc_max = 80;
+int acc_adjust = 20;
 int servo_min = 20;
 int servo_max = 160;
 int azimuth = 90;
@@ -41,7 +42,7 @@ void loop()
         azimuth_acc += 1;
         if ( azimuth_acc == acc_max )
         {
-            azimuth_acc = acc_max/2;
+            azimuth_acc = azimuth_acc - acc_adjust;
             if ( azimuth < servo_max )
             {
                 azimuth += 1;
@@ -51,7 +52,7 @@ void loop()
         azimuth_acc -= 1;
         if ( azimuth_acc == 0 )
         {
-            azimuth_acc = acc_max/2;
+            azimuth_acc = azimuth_acc + acc_adjust;
             if ( azimuth > servo_min )
             {
                 azimuth -= 1;
@@ -63,7 +64,7 @@ void loop()
         elevation_acc += 1;
         if ( elevation_acc == acc_max )
         {
-            elevation_acc = acc_max/2;
+            elevation_acc = elevation_acc - acc_adjust;
             if ( elevation < servo_max )
             {
                 elevation += 1;
@@ -73,7 +74,7 @@ void loop()
         elevation_acc -= 1;
         if ( elevation_acc == 0 )
         {
-            elevation_acc = acc_max/2;
+            elevation_acc = elevation_acc + acc_adjust;
             if ( elevation > servo_min )
             {
                 elevation -= 1;
@@ -83,4 +84,3 @@ void loop()
     azimuth_servo.write(azimuth);
     elevation_servo.write(elevation);
 }
-
